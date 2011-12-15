@@ -1,5 +1,9 @@
 	(function( $ ){
-	var prefix = $.browser.webkit ? "-webkit-" : "-moz-";
+	var prefix = $.browser.webkit ? "-webkit-" : 
+			$.browser.mozilla ? "-moz-" : 
+			$.browser.opera ? "-o-" :
+			$.browser.msie ? "-ms-" :
+			"";
 	var styleTag = $("<style type='text/css'></style>");
 	var counter = 0;
 	var defaults = {
@@ -37,33 +41,32 @@
 
 		unset : function( ) { },
 		animate : function(opts ) { 
-			$("head").append(styleTag);
+
 			var options = $.extend(defaults,opts);
+			var animation_name= (options.name || "jQani_"+(this.id || this.name));
+			//console.log(animation_name);
+			var animation = "";
+			var from = "";
+			$.each(options.from, function(v,w) {
+				from += prefix+v+":"+w+";";
+			});
+			var to = "";
+			$.each(defaults.to, function(v,w) {
+				to += prefix+v+":"+w+";";
+			});
+			animation += "@"+prefix+"keyframes "+animation_name+" { ";
+			animation += "from { "+from+" } ";
+			animation += "to { "+to+" } ";
+			animation += " } ";
+			//console.log(animation);
+			styleTag.text(animation);
+			$("head").append(styleTag);
+			var text = animation_name+" "+
+				options.duration+" "+ 
+				(options.timingFunc || "linear")+" "+
+				(options.infinite ? "infinite" : "");
+
 			return this.each(function(){
-				var animation_name= (options.name || "jQani_"+(this.id || this.name));
-				//console.log(animation_name);
-				var animation = "";
-				var from = "";
-				$.each(options.from, function(v,w) {
-					from += prefix+v+":"+w+";";
-				});
-				var to = "";
-				$.each(defaults.to, function(v,w) {
-					to += prefix+v+":"+w+";";
-				});
-				animation += "@"+prefix+"keyframes "+animation_name+" { ";
-				animation += "from { "+from+" } ";
-				animation += "to { "+to+" } ";
-				animation += " } ";
-				//console.log(animation);
-				styleTag.text(animation);
-
-				var text = animation_name+" "+
-					options.duration+" "+ 
-					(options.timingFunc || "linear")+" "+
-					(options.infinite ? "infinite" : "");
-
-
 				$(this).css(prefix+"animation-name", animation_name);
 				$(this).css(prefix+"animation-duration", options.duration);					
 				$(this).css(prefix+"animation-timing-function", (options.timingFunc || "linear"));
