@@ -1,0 +1,40 @@
+== MOTIVATION
+This library should ease the use of CSS3 animations.
+For flexible use in games or simpler eye-catchers this file consists as a jQuery library. You will need to include jQuery 1.6, 1.7 or later
+
+These animations are supported by latest Safari/Chrome/FF versions.
+Also this will (hopefully) availible in future Opera release and IE10.
+
+
+== API
+
+These functions apply to jQuery Objects:
+
+//generate (and start) animation
+.animation('animate', {
+                name: 'MyCoolAnimation',
+                duration         : '1s',
+                from        : { cssFormatter : cssValue },
+                to         : { cssFormatter : cssValue },
+                infinite         : false,
+                playState : 'running',
+                timingFunc: 'linear'
+           });    
+
+//Pause Animation
+.animation('pause');
+
+//Start animation (probably from lastly paused state)
+.animation('start');
+
+//Remove Animation
+.animation('destroy');
+
+== EXAMPLES
+
+$('#ufo').animation('animate', {
+                 duration: '1s',
+                 from: {'transform':'translate(0px)'},
+                 to: {'transform':'translate(2342px)'},
+                 infinite:false
+           });    
